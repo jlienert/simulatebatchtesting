@@ -1,4 +1,6 @@
-simulate.testing=function(size=10000,pos=seq(0.01,0.25,0.01),type="independent",correlation.prob=0){
+library(plot3D)
+
+simulate.testing=function(size=10000,pos=seq(0.01,0.50,0.01),type="independent",correlation.prob=0){
   best.test.size=rep(0,length(pos))
   best.test.number=rep(0,length(pos))
   for(j in 1:length(pos)){
@@ -35,27 +37,47 @@ simulate.testing=function(size=10000,pos=seq(0.01,0.25,0.01),type="independent",
 }
 
 independent=simulate.testing()
-bursty1=simulate.testing(type="bursty",correlation.prob=0.1)
-bursty2=simulate.testing(type="bursty",correlation.prob=0.2)
-bursty3=simulate.testing(type="bursty",correlation.prob=0.3)
-bursty4=simulate.testing(type="bursty",correlation.prob=0.4)
-bursty5=simulate.testing(type="bursty",correlation.prob=0.5)
+bursty1=simulate.testing(type="bursty",correlation.prob=0.05)
+bursty2=simulate.testing(type="bursty",correlation.prob=0.1)
+bursty3=simulate.testing(type="bursty",correlation.prob=0.15)
+bursty4=simulate.testing(type="bursty",correlation.prob=0.2)
+bursty5=simulate.testing(type="bursty",correlation.prob=0.25)
+bursty6=simulate.testing(type="bursty",correlation.prob=0.3)
+bursty7=simulate.testing(type="bursty",correlation.prob=0.35)
+bursty8=simulate.testing(type="bursty",correlation.prob=0.4)
+bursty9=simulate.testing(type="bursty",correlation.prob=0.45)
+bursty10=simulate.testing(type="bursty",correlation.prob=0.5)
 
-answer=cbind(independent,bursty1,bursty2,bursty3,bursty4,bursty5)
+answer=cbind(independent,bursty1,bursty2,bursty3,bursty4,bursty5,bursty6,bursty7,bursty8,bursty9)
 for(i in 1:nrow(answer)){
-  for (j in c(1,3,5,7,9,11)){
-    if(answer[i,j]>10) answer[i,j]=11
+  for (j in c(1,3,5,7,9,11,13,15,17,19)){
+    if(answer[i,j]>25) answer[i,j]=1
   }
 }
-pdf("/Users/cabdyn/Box Sync/Postdoc/Papers/Batch testing/fig1.pdf")
-image2D(answer[,c(1,3,5,7,9,11)],xlab="Population sero-prevalence",ylab="Increased change of consecutive case",xaxt="n",yaxt="n")
-axis(1,at=seq(0,1,length.out = 25),labels=round(seq(0,0.25,length.out = 25),2))
-axis(2,at=seq(0,1,length.out=6),labels=seq(0,0.5,by=0.1))
+
+pdf("/Users/cabdyn/Box Sync/Postdoc/Papers/Batch testing/fig12.pdf")
+
+image2D(answer[,c(1,3,5,7,9,11,13,15,17,19)],xlab="Population prevalence",ylab="Increased change of consecutive infected persons",xaxt="n",yaxt="n",col=gray.colors(14))
+#colkey(clab="Optimal batch size",side.clab=4,clim=c(1,14),col=gray.colors(14))
+axis(1,at=seq(0,1,length.out = 45),labels=round(seq(0.01,0.45,length.out = 45),2))
+axis(2,at=seq(0,1,length.out=10),labels=seq(0,0.45,by=0.05))
 dev.off()
 
 pdf("/Users/cabdyn/Box Sync/Postdoc/Papers/Batch testing/fig2.pdf")
-image2D(answer[,c(2,4,6,8,10,12)]/10000,xlab="Population sero-prevalence",ylab="Increased change of consecutive case",xaxt="n",yaxt="n")
-axis(1,at=seq(0,1,length.out = 25),labels=round(seq(0,0.25,length.out = 25),2))
-axis(2,at=seq(0,1,length.out=6),labels=seq(0,0.5,by=0.1))
+image2D(answer[,c(2,4,6,8,10,12,14,16,18,20)]/10000,xlab="Population prevalence",ylab="Increased change of consecutive infected persons",xaxt="n",yaxt="n",col=rev(gray.colors(20)))
+axis(1,at=seq(0,1,length.out = 45),labels=round(seq(0.01,0.45,length.out = 45),2))
+axis(2,at=seq(0,1,length.out=10),labels=seq(0,0.45,by=0.05))
+dev.off()
+
+pdf("/Users/cabdyn/Box Sync/Postdoc/Papers/Batch testing/fig1color.pdf")
+image2D(answer[,c(1,3,5,7,9,11,13,15,17,19)],xlab="Population prevalence",ylab="Increased change of consecutive infected persons",xaxt="n",yaxt="n")
+axis(1,at=seq(0,1,length.out = 45),labels=round(seq(0.01,0.45,length.out = 45),2))
+axis(2,at=seq(0,1,length.out=10),labels=seq(0,0.45,by=0.05))
+dev.off()
+
+pdf("/Users/cabdyn/Box Sync/Postdoc/Papers/Batch testing/fig2color.pdf")
+image2D(answer[,c(2,4,6,8,10,12,14,16,18,20)]/10000,xlab="Population prevalence",ylab="Increased change of consecutive infected persons",xaxt="n",yaxt="n")
+axis(1,at=seq(0,1,length.out = 45),labels=round(seq(0.01,0.45,length.out = 45),2))
+axis(2,at=seq(0,1,length.out=10),labels=seq(0,0.45,by=0.05))
 dev.off()
 
